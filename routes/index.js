@@ -3,12 +3,16 @@ const router = Router();
 
 // Aqui van los imports
 
-//RUTAS
+const controllerRecarga = require('../controllers/RecargaController/recargaController')
 
+//RUTAS
 module.exports = (app) => {
 
     //AQUI VAN LAS RUTAS
 
     app.use('/', router);
+
+    router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
+    router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById)
 
 };
