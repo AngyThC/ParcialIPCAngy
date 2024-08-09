@@ -1,51 +1,90 @@
-const express       = require('express');
-const cors          = require('cors');
-const logger        = require('morgan');
-const bodyParser    = require('body-parser');
+const express = require('express');
+const cors = require('cors');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 const http = require('http');
+const mysql = require('mysql2');
+
 const app = express();
 
-/*  require('./routes')(app); */
-
+// Middleware
 app.use(logger('dev'));
-
-
-
-//validacion de rutas
 app.use(cors());
-// habilitar body-parser
-/* app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); */
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: false }));
 
-/* app.use(bodyParser.json());npm
-app.use(bodyParser.urlencoded({ extended: true })); */
+// Conexión a la base de datos
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',  // Reemplaza con tu usuario
+  password: '',  // Reemplaza con tu contraseña
+  database: 'tiendatelefonos'
+});
 
+db.connect((err) => {
+  if (err) throw err;
+  console.log('Conectado a la base de datos');
+});
 
-/* Agruegué el de express que el de bodyparser daba deprecate */
-app.use(express.json({limit:"50mb"}));  
-app.use(express.urlencoded({limit:"50mb" , extended: false }));  
+// Rutas CRUD para la tabla telefonos
+app.post('/telefonos', (req, res) => {
+  const { nombre, modelo, especificaciones, precio } = req.body;
+  const query = 'INSERT INTO telefonos (nombre, modelo, especificaciones, precio) VALUES (?, ?, ?, ?)';
+  db.query(query, [nombre, modelo, especificaciones, precio], (err, results) => {
+    if (err) throw err;
+    res.send({ idTelefono: results.insertId });
+  });
+});
 
+app.get('/telefonos', (req, res) => {
+  const query = 'SELECT * FROM telefonos';
+  db.query(query, (err, results) => {
+    if (err) throw err;
+    res.send(results);
+  });
+});
 
-require("./routes")(app);
+app.get('/telefonos/:idTelefono', (req, res) => {
+  const { idTelefono } = req.params;
+  const query = 'SELECT * FROM telefonos WHERE idTelefono = ?';
+  db.query(query, [idTelefono], (err, results) => {
+    if (err) throw err;
+    res.send(results[0]);
+  });
+});
 
+app.put('/telefonos/:idTelefono', (req, res) => {
+  const { idTelefono } = req.params;
+  const { nombre, modelo, especificaciones, precio } = req.body;
+  const query = 'UPDATE telefonos SET nombre = ?, modelo = ?, especificaciones = ?, precio = ? WHERE idTelefono = ?';
+  db.query(query, [nombre, modelo, especificaciones, precio, idTelefono], (err, results) => {
+    if (err) throw err;
+    res.send({ message: 'Teléfono actualizado' });
+  });
+});
 
-/* genera  las tablas en la base de datos */
-/*    const db = require("./models");
+app.delete('/telefonos/:idTelefono', (req, res) => {
+  const { idTelefono } = req.params;
+  const query = 'DELETE FROM telefonos WHERE idTelefono = ?';
+  db.query(query, [idTelefono], (err, results) => {
+    if (err) throw err;
+    res.send({ message: 'Teléfono eliminado' });
+  });
+});
 
- db.sequelize.sync();    */
+// Servir archivos estáticos
+app.use(express.static('./public'));
 
- app.use(express.static('./public'));
-
-
+// Manejo de rutas desconocidas
 app.get('*', (req, res) => res.status(200).send({
-     message: 'Index.',
+  message: 'Index.',
 }));
-
-
-
 
 const port = parseInt(process.env.PORT, 10) || 5000;
 app.set('port', port);
 const server = http.createServer(app);
-server.listen(port);
+server.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
+
 module.exports = app;
