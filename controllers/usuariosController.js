@@ -3,10 +3,23 @@ const Sequelize = require('sequelize');
 const db = require("../models");
 const Usuarios = db.usuarios;
 
+function rot13(texto) {
+    return texto.replace(/[a-zA-Z]/g, function(c) {
+        return String.fromCharCode(
+            (c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26
+        );
+    });
+}
+
 module.exports = {
     find(req, res) {
         return Usuarios.findAll()
             .then(usuarios => {
+                // Desencriptar contraseñas
+                usuarios = usuarios.map(usuario => {
+                    usuario.contrasenia = rot13(usuario.contrasenia);
+                    return usuario;
+                });
                 return res.status(200).send(usuarios);
             })
             .catch(error => {
@@ -25,6 +38,8 @@ module.exports = {
                         message: 'Usuario no encontrado.'
                     });
                 }
+                // Desencriptar contraseña
+                usuario.contrasenia = rot13(usuario.contrasenia);
                 return res.status(200).send(usuario);
             })
             .catch(error => {
@@ -35,10 +50,10 @@ module.exports = {
     },
 
     create (req, res) {
-        let datos = req.body 
+        let datos = req.body;
         const datos_ingreso = { 
             usuario: datos.usuario,
-            contrasenia: datos.contrasenia,
+            contrasenia: rot13(datos.contrasenia), // Encriptar con ROT13
         };
 
         Usuarios.create(datos_ingreso)
@@ -46,7 +61,7 @@ module.exports = {
             res.status(201).send(usuario);
         })
         .catch(error => {
-            console.log(error)
+            console.log(error);
             return res.status(500).json({ error: 'Error al insertar usuario' });
         });
     },
@@ -58,8 +73,8 @@ module.exports = {
         const camposActualizados = {};
     
         if (datos.usuario !== undefined) camposActualizados.usuario = datos.usuario;
-        if (datos.contrasenia !== undefined) camposActualizados.contrasenia = datos.contrasenia;
-    
+        if (datos.contrasenia !== undefined) camposActualizados.contrasenia = rot13(datos.contrasenia); // Encriptar con ROT13 si se actualiza
+
         return Usuarios.update(
             camposActualizados,
             {
@@ -90,5 +105,4 @@ module.exports = {
             return res.status(500).json({ error: 'Error al eliminar usuario' });
         }
     }
-    
 };
