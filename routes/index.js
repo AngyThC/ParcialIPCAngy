@@ -18,6 +18,7 @@ module.exports = (app) => {
    router.put('/residenciales/update', residencialesController.update);
    //ruta DELETE residencial
    router.delete('/residenciales/delete/:idResidencia', residencialesController.delete)
+   
     //AQUI VAN LAS RUTAS
     router.post('/usuarios', usuariosController.create);
     router.get('/usuarios', usuariosController.find);
