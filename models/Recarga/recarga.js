@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    dias: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     minutosLlamada: {
       type: DataTypes.INTEGER,
       allowNull: false

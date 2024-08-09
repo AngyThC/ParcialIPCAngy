@@ -12,7 +12,11 @@ module.exports = (app) => {
 
     app.use('/', router);
 
+    // rutas de recargas
     router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
-    router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById)
+    router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
+    router.post('/recargas/create', controllerRecarga.createRecarga);
+    router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
+    router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
 
 };
