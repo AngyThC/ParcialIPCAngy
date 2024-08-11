@@ -31,9 +31,6 @@ module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
     router.post('/login', usuariosController.login);
 
-    // Aplicar el middleware de autenticación a partir de aquí
-    router.use(authenticateToken);
-
     // Rutas de Usuarios (Protegidas)
     router.post('/usuarios', usuariosController.create);
     router.get('/usuarios', usuariosController.find);
