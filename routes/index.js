@@ -12,22 +12,22 @@ const usuariosController = require('../controllers/usuariosController');
 
 // Definir las rutas
 module.exports = (app) => {
-
-   //ruta GET Residencial
-   router.get('/residenciales/get', residencialesController.find);
-   //ruta GETby Id Residencial
-   router.get('/residenciales/:idResidencia', residencialesController.findById);
-   //ruta POST residencial
-   router.post('/residenciales/create', residencialesController.create);
-   //ruta PUT residencial
-   router.put('/residenciales/update', residencialesController.update);
-   //ruta DELETE residencial
-   router.delete('/residenciales/delete/:idResidencia', residencialesController.delete)
     // Rutas Públicas (No protegidas por el middleware)
     router.post('/login', usuariosController.login);
 
     // Aplicar el middleware de autenticación a partir de aquí
     router.use(authenticateToken);
+
+    //ruta GET Residencial
+    router.get('/residenciales/get', residencialesController.find);
+    //ruta GETby Id Residencial
+    router.get('/residenciales/:idResidencia', residencialesController.findById);
+    //ruta POST residencial
+    router.post('/residenciales/create', residencialesController.create);
+    //ruta PUT residencial
+    router.put('/residenciales/update', residencialesController.update);
+    //ruta DELETE residencial
+    router.delete('/residenciales/delete/:idResidencia', residencialesController.delete);
 
     // Rutas de Usuarios (Protegidas)
     router.post('/usuarios', usuariosController.create);
@@ -36,9 +36,6 @@ module.exports = (app) => {
     router.put('/usuarios/:id', usuariosController.update);
     router.delete('/usuarios/:id', usuariosController.delete);
 
-    // Utilizar el enrutador en la aplicación
-    app.use('/', router);
-
     // rutas de recargas
     router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
     router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
@@ -46,6 +43,6 @@ module.exports = (app) => {
     router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
     router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
 
-
- 
+    // Utilizar el enrutador en la aplicación
+    app.use('/', router);
 };
