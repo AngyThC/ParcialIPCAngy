@@ -7,6 +7,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 // Importar el controlador de usuarios
 const residencialesController = require('../controllers/residencialesController');
 
+const telefonosController = require('../controllers/telefonosController');
 const controllerRecarga = require('../controllers/RecargaController/recargaController')
 const usuariosController = require('../controllers/usuariosController');
 
@@ -14,6 +15,13 @@ const usuariosController = require('../controllers/usuariosController');
 module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
     router.post('/login', usuariosController.login);
+
+    // Rutas de Telefonos
+    router.get('/telefonos/get', telefonosController.find);
+    router.get('/telefonos/:idTelefono', telefonosController.findById);
+    router.post('/telefonos/create', telefonosController.create);
+    router.put('/telefonos/update/:idTelefono', telefonosController.update);
+    router.delete('/telefonos/delete/:idTelefono', telefonosController.delete);
 
     // Aplicar el middleware de autenticación a partir de aquí
     router.use(authenticateToken);
