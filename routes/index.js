@@ -23,6 +23,13 @@ module.exports = (app) => {
     router.put('/telefonos/update/:idTelefono', telefonosController.update);
     router.delete('/telefonos/delete/:idTelefono', telefonosController.delete);
 
+    // rutas de recargas
+    router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
+    router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
+    router.post('/recargas/create', controllerRecarga.createRecarga);
+    router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
+    router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
+
     // Aplicar el middleware de autenticación a partir de aquí
     router.use(authenticateToken);
 
@@ -45,13 +52,6 @@ module.exports = (app) => {
     router.get('/usuarios/:id', usuariosController.findById);
     router.put('/usuarios/:id', usuariosController.update);
     router.delete('/usuarios/:id', usuariosController.delete);
-
-    // rutas de recargas
-    router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
-    router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
-    router.post('/recargas/create', controllerRecarga.createRecarga);
-    router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
-    router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
 
     // Utilizar el enrutador en la aplicación
     app.use('/', router);
