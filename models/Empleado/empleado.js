@@ -6,8 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       static associate(models) {
         // Asociación con el modelo Usuarios
         Empleados.belongsTo(models.usuarios, {
-          foreignKey: 'idUsuario',
-          as: 'usuario'
+          foreignKey: 'idUsuario'
         });
       }
     };
@@ -44,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
     },
     fechaNacimiento: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false
     },
     idUsuario: {

@@ -6,8 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Asociación con el modelo Empleados
       Usuarios.hasOne(models.empleados, {
-        foreignKey: 'idUsuario',
-        as: 'empleado'
+        foreignKey: 'idUsuario'
       });
     }
   };

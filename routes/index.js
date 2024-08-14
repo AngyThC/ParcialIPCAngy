@@ -8,8 +8,9 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 const residencialesController = require('../controllers/residencialesController');
 
 const telefonosController = require('../controllers/telefonosController');
-const controllerRecarga = require('../controllers/RecargaController/recargaController')
+const controllerRecarga = require('../controllers/RecargaController/recargaController');
 const usuariosController = require('../controllers/usuariosController');
+const controllerEmpleado = require('../controllers/EmpleadoController/empleadoController');
 
 // Definir las rutas
 module.exports = (app) => {
@@ -29,6 +30,16 @@ module.exports = (app) => {
     router.post('/recargas/create', controllerRecarga.createRecarga);
     router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
     router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
+
+    // rutas de empleados
+    router.get('/empleados/getAll', controllerEmpleado.getAllEmpleados); // obtener todos
+    router.get('/empleados/getId/:idEmpleado', controllerEmpleado.getEmpleadoById); // obtener por id de empleado
+    router.get('/empleados/getName/:nombre', controllerEmpleado.getEmpleadoByName); // obtener por nombre de empleado
+    router.post('/empleados/createIDE', controllerEmpleado.createEmpleadoWithID); // crear con el id de usuario
+    router.put('/empleados/update/:idEmpleado', controllerEmpleado.updateEmpleadoWithID); // actualizar por id de empleado
+    router.put('/empleados/updateByName/:nombre', controllerEmpleado.updateEmpleadoByName); // actualizar por nombre de empleado
+    router.delete('/empleados/delete/:idEmpleado', controllerEmpleado.deleteEmpleadoWithID); // eliminar por id de empleado
+    router.delete('/empleados/deleteByName/:nombre', controllerEmpleado.deleteEmpleadoByName); // eliminar por nombre de empleado
 
     // Aplicar el middleware de autenticación a partir de aquí
     router.use(authenticateToken);
