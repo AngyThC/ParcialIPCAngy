@@ -1,30 +1,22 @@
-'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class DetalleVentas extends Model {
     static associate(models) {
-      // Asociación con el modelo Telefono
-      DetalleVentas.belongsTo(models.telefono, {
-        foreignKey: 'idTelefono'
-      });
-
-      // Asociación con el modelo Recarga
-      DetalleVentas.belongsTo(models.recarga, {
-        foreignKey: 'idRecarga'
-      });
-
-      // Asociación con el modelo Residencia
-      DetalleVentas.belongsTo(models.residencia, {
+      DetalleVentas.belongsTo(models.residenciales, {
         foreignKey: 'idResidencia'
       });
-
-      // Asociación con el modelo Venta
-      DetalleVentas.belongsTo(models.venta, {
+      DetalleVentas.belongsTo(models.Telefonos, {
+        foreignKey: 'idTelefono'
+      });
+      DetalleVentas.belongsTo(models.Recarga, {
+        foreignKey: 'idRecarga'
+      });
+      DetalleVentas.belongsTo(models.ventas, {
         foreignKey: 'idVenta'
       });
     }
-  };
+  }
 
   DetalleVentas.init({
     idDetalle: {
@@ -63,12 +55,11 @@ module.exports = (sequelize, DataTypes) => {
     idVenta: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
+    }
   }, {
     sequelize,
     modelName: 'detalle_ventas',
-    tableName: 'detalle_ventas',
-    timestamps: false 
+    timestamps: false
   });
 
   return DetalleVentas;
