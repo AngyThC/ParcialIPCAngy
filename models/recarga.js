@@ -3,10 +3,13 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Recarga extends Model {
-    static associations(models) {
-      // Asociaciones
+    static associate(models) {
+      // Asociación con el modelo DetalleVentas
+      Recarga.hasMany(models.detalle_ventas, {
+        foreignKey: 'idRecarga'
+      });
     }
-  };
+  }
   
   Recarga.init({
     idRecarga: {
@@ -16,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     precio: {
-      type: DataTypes.DECIMAL(6,2),
+      type: DataTypes.DECIMAL(6, 2),
       allowNull: false
     },
     internet: {
@@ -32,14 +35,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     aplicaciones: {
-        type: DataTypes.TEXT,
-        allowNull: false
-      },
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
   }, {
     sequelize,
-    modelName: 'recargas', // Nombre del modelo definido
-    tableName: 'recargas', // Nombre de la tabla
-    timestamps: false, // para no usar los created y updated
+    modelName: 'Recarga',
+    tableName: 'recargas',
+    timestamps: false
   });
 
   return Recarga;

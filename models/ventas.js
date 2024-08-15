@@ -2,21 +2,26 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    class Ventas extends Model {
-        static associate(models) {
-            // Asociación con el modelo Clientes
-            Ventas.belongsTo(models.clientes, {
-                foreignKey: 'idCliente'
-            });
+  class Ventas extends Model {
+    static associate(models) {
+      // Asociación con el modelo Clientes
+      Ventas.belongsTo(models.clientes, {
+        foreignKey: 'idCliente'
+      });
 
-            // Asociación con el modelo Empleados
-            Ventas.belongsTo(models.empleados, {
-                foreignKey: 'idEmpleado'
-            });
-        }
-    };
+      // Asociación con el modelo Empleados
+      Ventas.belongsTo(models.empleados, {
+        foreignKey: 'idEmpleado'
+      });
+
+      // Asociación con el modelo DetalleVentas
+      Ventas.hasMany(models.detalle_ventas, {
+        foreignKey: 'idVenta'
+      });
+    }
+  };
   
-    Ventas.init({
+  Ventas.init({
     idVenta: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -28,9 +33,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     fecha: {
-        type: DataTypes.DATEONLY,
-        allowNull: true
-      },
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
     idCliente: {
       type: DataTypes.INTEGER,
       allowNull: false
