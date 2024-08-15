@@ -10,7 +10,7 @@ const residencialesController = require('../controllers/residencialesController'
 const telefonosController = require('../controllers/telefonosController');
 const controllerRecarga = require('../controllers/RecargaController/recargaController');
 const usuariosController = require('../controllers/usuariosController');
-const controllerEmpleado = require('../controllers/EmpleadoController/empleadoController');
+const controllerEmpleado = require('../controllers/empleadoController');
 
 // Definir las rutas
 module.exports = (app) => {
