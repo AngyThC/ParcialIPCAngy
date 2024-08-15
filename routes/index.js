@@ -11,6 +11,7 @@ const controllerRecarga = require('../controllers/recargaController');
 const usuariosController = require('../controllers/usuariosController');
 const controllerEmpleado = require('../controllers/empleadoController');
 const clientesController = require('../controllers/clientesController');
+const ventasController = require('../controllers/ventasController');
 
 module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
@@ -18,6 +19,14 @@ module.exports = (app) => {
 
     // Aplicar el middleware de autenticación a partir de aquí
     // <---------------------------------------------------------------------------------------------------------------------------------------->
+
+    // Rutas de Ventas
+    router.get('/ventas/get', ventasController.getAllVentas); // Obtener todas las ventas
+    router.get('/ventas/:idVenta', ventasController.getVentaById); // Obtener una venta por ID
+    router.post('/ventas/create', ventasController.createVenta); // Crear una nueva venta
+    router.put('/ventas/update/:idVenta', ventasController.updateVenta); // Actualizar una venta por ID
+    router.delete('/ventas/delete/:idVenta', ventasController.deleteVenta); // Eliminar una venta por ID
+
     router.use(authenticateToken);
 
     // <-------------------------- TABLAS FUERTES -------------------------->
