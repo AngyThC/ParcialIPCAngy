@@ -1,6 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const db = require('../../models');
+const db = require('../models');
 const Recarga = db.recargas;
 
 module.exports = {

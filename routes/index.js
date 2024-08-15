@@ -8,7 +8,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 const residencialesController = require('../controllers/residencialesController');
 
 const telefonosController = require('../controllers/telefonosController');
-const controllerRecarga = require('../controllers/RecargaController/recargaController')
+const controllerRecarga = require('../controllers/recargaController')
 const usuariosController = require('../controllers/usuariosController');
 const clientesController = require('../controllers/clientesController');
 
