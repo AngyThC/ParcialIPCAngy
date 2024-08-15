@@ -2,7 +2,14 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Usuarios extends Model {};
+  class Usuarios extends Model {
+    static associate(models) {
+      // Asociación con el modelo Empleados
+      Usuarios.hasOne(models.empleados, {
+        foreignKey: 'idUsuario'
+      });
+    }
+  };
 
   Usuarios.init({
     idUsuario: {

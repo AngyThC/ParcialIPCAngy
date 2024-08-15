@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       },
   }, {
     sequelize,
-    modelName: 'recargas', // Nombre del modelo en singular
+    modelName: 'recargas', // Nombre del modelo definido
     tableName: 'recargas', // Nombre de la tabla
     timestamps: false, // para no usar los created y updated
   });
