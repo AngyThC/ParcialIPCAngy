@@ -2,14 +2,19 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    class Empleados extends Model {
+  class Empleados extends Model {
       static associate(models) {
-        // Asociación con el modelo Usuarios
-        Empleados.belongsTo(models.usuarios, {
-          foreignKey: 'idUsuario'
-        });
+          // Asociación con el modelo Ventas
+          Empleados.hasMany(models.ventas, {
+              foreignKey: 'idEmpleado'
+          });
+
+          // Asociación con el modelo Usuarios (asumiendo que ya existe el modelo Usuarios)
+          Empleados.belongsTo(models.usuarios, {
+              foreignKey: 'idUsuario'
+          });
       }
-    };
+  };
   
   Empleados.init({
     idEmpleado: {

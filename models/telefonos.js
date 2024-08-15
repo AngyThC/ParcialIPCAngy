@@ -2,7 +2,14 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Telefonos extends Model {}
+  class Telefonos extends Model {
+    static associate(models) {
+      // Asociación con el modelo DetalleVentas
+      Telefonos.hasMany(models.detalle_ventas, {
+        foreignKey: 'idTelefono'
+      });
+    }
+  }
 
   Telefonos.init({
     idTelefono: {
@@ -29,6 +36,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Telefonos',
+    tableName: 'telefonos', // Nombre de la tabla en plural y minúscula
     timestamps: false
   });
 

@@ -1,11 +1,15 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class residenciales extends Model {
-   
-  };
+    static associate(models) {
+      residenciales.hasMany(models.detalle_ventas, {
+        foreignKey: 'idResidencia'
+      });
+    }
+  }
+
   residenciales.init({
     idResidencia: {
       type: DataTypes.INTEGER,
@@ -13,25 +17,27 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     precio: {
-        type: DataTypes.DECIMAL(6,2),
-        allowNull: false
-      },
+      type: DataTypes.DECIMAL(6, 2),
+      allowNull: false
+    },
     televisores: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     telefonoFijo: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     velocidadInternet: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'residenciales',
-    timestamps: false 
+    tableName: 'residenciales',
+    timestamps: false
   });
+
   return residenciales;
 };

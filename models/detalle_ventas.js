@@ -1,8 +1,22 @@
-'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class DetalleVentas extends Model {}
+  class DetalleVentas extends Model {
+    static associate(models) {
+      DetalleVentas.belongsTo(models.residenciales, {
+        foreignKey: 'idResidencia'
+      });
+      DetalleVentas.belongsTo(models.Telefonos, {
+        foreignKey: 'idTelefono'
+      });
+      DetalleVentas.belongsTo(models.Recarga, {
+        foreignKey: 'idRecarga'
+      });
+      DetalleVentas.belongsTo(models.ventas, {
+        foreignKey: 'idVenta'
+      });
+    }
+  }
 
   DetalleVentas.init({
     idDetalle: {
@@ -11,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     direccion: {
-      type: DataTypes.STRING(250),
+      type: DataTypes.STRING,
       allowNull: false
     },
     subtotal: {
@@ -28,49 +42,24 @@ module.exports = (sequelize, DataTypes) => {
     },
     idTelefono: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'telefonos',  // Tabla a la que hace referencia
-        key: 'idTelefono'    // Columna en la tabla referenciada
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL' // Puedes cambiar por 'CASCADE' si prefieres que se elimine en cascada
+      allowNull: false
     },
     idRecarga: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'recargas',  // Tabla a la que hace referencia
-        key: 'idRecarga'    // Columna en la tabla referenciada
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      allowNull: false
     },
     idResidencia: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'residencias',  // Tabla a la que hace referencia
-        key: 'idResidencia'    // Columna en la tabla referenciada
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      allowNull: false
     },
     idVenta: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'ventas',  // Tabla a la que hace referencia
-        key: 'idVenta'    // Columna en la tabla referenciada
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
-    },
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'detalle_ventas',
-    timestamps: false
+    timestamps: false 
   });
-
-  return DetalleVentas;
+  return detalle_ventas;
 };
