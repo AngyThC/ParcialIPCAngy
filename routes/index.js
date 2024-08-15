@@ -11,6 +11,7 @@ const controllerRecarga = require('../controllers/recargaController');
 const usuariosController = require('../controllers/usuariosController');
 const controllerEmpleado = require('../controllers/empleadoController');
 const clientesController = require('../controllers/clientesController');
+const detalleVentasController = require('../controllers/detalleventasController');
 
 module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
@@ -72,6 +73,13 @@ module.exports = (app) => {
     router.put('/empleados/updateByName/:nombre', controllerEmpleado.updateEmpleadoByName); // actualizar por nombre de empleado
     router.delete('/empleados/delete/:idEmpleado', controllerEmpleado.deleteEmpleadoWithID); // eliminar por id de empleado
     router.delete('/empleados/deleteByName/:nombre', controllerEmpleado.deleteEmpleadoByName); // eliminar por nombre de empleado
+
+    // Rutas de Detalles de Ventas (Protegidas)
+    router.get('/detalle_ventas', detalleVentasController.find);
+    router.get('/detalle_ventas/:idDetalle', detalleVentasController.findById);
+    router.post('/detalle_ventas', detalleVentasController.create);
+    router.put('/detalle_ventas/:idDetalle', detalleVentasController.update);
+    router.delete('/detalle_ventas/:idDetalle', detalleVentasController.delete);
 
     // Utilizar el enrutador en la aplicación
     app.use('/', router);
