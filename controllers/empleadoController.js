@@ -36,23 +36,6 @@ module.exports = {
     }
   },
 
-  async getEmpleadoByName(req, res) { // getByName empleado
-    const { nombre } = req.params;
-
-    try {
-      const empleados = await Empleado.findAll({ where: { nombre } });
-
-      if (empleados.length === 0) {
-        return res.status(404).json({ message: `Empleado con nombre: ${nombre} no encontrado` });
-      }
-
-      res.status(200).json(empleados);
-    } catch (error) {
-      console.error('Error al obtener el empleado por nombre:', error);
-      res.status(500).json({ error: 'Error al obtener el empleado por nombre' });
-    }
-  },
-
   async createEmpleadoWithID(req, res) { // crear empleado con el id del usuario
     const { salario, salarioTotal, comision, nombre, dpi, telefono, fechaNacimiento, idUsuario } = req.body;
   
@@ -115,41 +98,6 @@ module.exports = {
     }
   },
 
-  async updateEmpleadoByName(req, res) { // actualizar empleado por nombre *no actualiza el nombre*
-    const { nombre } = req.params;
-    const { salario, salarioTotal, comision, dpi, telefono, fechaNacimiento, idUsuario } = req.body;
-  
-    try {
-      const empleado = await Empleado.findOne({ where: { nombre } });
-  
-      if (!empleado) {
-        return res.status(404).json({ message: `Empleado con nombre: ${nombre} no encontrado` });
-      }
-  
-      // Solo actualizar los campos que fueron enviados en la solicitud
-      if (salario !== undefined) empleado.salario = salario;
-      if (salarioTotal !== undefined) empleado.salarioTotal = salarioTotal;
-      if (comision !== undefined) empleado.comision = comision;
-      if (dpi !== undefined) empleado.dpi = dpi;
-      if (telefono !== undefined) empleado.telefono = telefono;
-  
-      // Procesa la fecha solo si está definida
-      if (fechaNacimiento !== undefined) {
-        const fechaNacimientoFormateada = new Date(fechaNacimiento).toISOString().split('T')[0];
-        empleado.fechaNacimiento = fechaNacimientoFormateada;
-      }
-  
-      if (idUsuario !== undefined) empleado.idUsuario = idUsuario;
-  
-      await empleado.save();
-  
-      res.status(200).json({ message: `Empleado con nombre: ${nombre} actualizado exitosamente`, empleado });
-    } catch (error) {
-      console.error('Error al actualizar el empleado por nombre:', error);
-      res.status(500).json({ error: 'Error al actualizar el empleado por nombre' });
-    }
-  },
-  
   async deleteEmpleadoWithID(req, res) { // eliminar un empleado por su id
     const { idEmpleado } = req.params;
 
@@ -166,25 +114,6 @@ module.exports = {
     } catch (error) {
       console.error('Error al eliminar el empleado:', error);
       res.status(500).json({ error: 'Error al eliminar el empleado' });
-    }
-  },
-
-  async deleteEmpleadoByName(req, res) { // eliminar un empleado por su nombre
-    const { nombre } = req.params;
-
-    try {
-      const empleado = await Empleado.findOne({ where: { nombre } });
-
-      if (!empleado) {
-        return res.status(404).json({ message: `Empleado con nombre: ${nombre} no encontrado` });
-      }
-
-      await empleado.destroy();
-
-      res.status(200).json({ message: `Empleado con nombre: ${nombre} ha sido eliminado` });
-    } catch (error) {
-      console.error('Error al eliminar el empleado por nombre:', error);
-      res.status(500).json({ error: 'Error al eliminar el empleado por nombre' });
     }
   }
 }

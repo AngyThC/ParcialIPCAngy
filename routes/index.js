@@ -72,12 +72,9 @@ module.exports = (app) => {
     // rutas de empleados (Protegidas)
     router.get('/empleados/getAll', controllerEmpleado.getAllEmpleados); // obtener todos
     router.get('/empleados/getId/:idEmpleado', controllerEmpleado.getEmpleadoById); // obtener por id de empleado
-    router.get('/empleados/getName/:nombre', controllerEmpleado.getEmpleadoByName); // obtener por nombre de empleado
     router.post('/empleados/createIDE', controllerEmpleado.createEmpleadoWithID); // crear con el id de usuario
     router.put('/empleados/update/:idEmpleado', controllerEmpleado.updateEmpleadoWithID); // actualizar por id de empleado
-    router.put('/empleados/updateByName/:nombre', controllerEmpleado.updateEmpleadoByName); // actualizar por nombre de empleado
     router.delete('/empleados/delete/:idEmpleado', controllerEmpleado.deleteEmpleadoWithID); // eliminar por id de empleado
-    router.delete('/empleados/deleteByName/:nombre', controllerEmpleado.deleteEmpleadoByName); // eliminar por nombre de empleado
 
     // Rutas de Ventas
     router.get('/ventas/get', ventasController.getAllVentas); // Obtener todas las ventas
