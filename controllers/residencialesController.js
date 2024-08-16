@@ -29,10 +29,36 @@ module.exports = {
             });
     },
 
+    // Controlador - residencialesController.js
+findAllResidenciales(req, res) {
+    return RESIDENCIALES.findAll({
+        attributes: ['idResidencia', 'nombrePlan']
+    })
+    .then(residenciales => {
+        // Si hay registros, los devolvemos
+        if (residenciales.length > 0) {
+            return res.status(200).send(residenciales);
+        } else {
+            // Si no hay registros, devolvemos un mensaje
+            return res.status(404).send({
+                message: 'No se encontraron residenciales.'
+            });
+        }
+    })
+    .catch(error => {
+        // Si ocurre un error, lo manejamos aquí
+        console.error("Error al recuperar los datos:", error);
+        return res.status(500).send({
+            message: 'Ocurrió un error al recuperar los datos.'
+        });
+    });
+},
+
 
     create (req, res) {
         let datos = req.body 
         const datos_ingreso = { 
+            nombrePlan: datos.nombrePlan,
             precio: datos.precio,
             televisores: datos.televisores,
             telefonoFijo: datos.telefonoFijo,
@@ -54,7 +80,8 @@ module.exports = {
         const id = datos.idResidencia;
     
         const camposActualizados = {};
-    
+
+        if (datos.nombrePlan !== undefined) camposActualizados.nombrePlan = datos.nombrePlan;
         if (datos.precio !== undefined) camposActualizados.precio = datos.precio;
         if (datos.televisores !== undefined) camposActualizados.televisores = datos.televisores;
         if (datos.telefonoFijo !== undefined) camposActualizados.telefonoFijo = datos.telefonoFijo;

@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true
     },
+    nombrePlan: {
+      type: DataTypes.STRING(250),
+      allowNull: false
+    },
     precio: {
       type: DataTypes.DECIMAL(6, 2),
       allowNull: false

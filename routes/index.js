@@ -17,9 +17,22 @@ const detalleVentasController = require('../controllers/detalleVentasController'
 module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
     router.post('/login', usuariosController.login);
-
+    
     // Aplicar el middleware de autenticación a partir de aquí
     // <---------------------------------------------------------------------------------------------------------------------------------------->
+      //ruta GET Residencial
+      router.get('/residenciales/get', residencialesController.find);
+      //ruta GETby Id Residencial
+      router.get('/residenciales/:idResidencia', residencialesController.findById);
+      //ruta GETByNOmbrePlan
+      router.get('/residenciales', residencialesController.findAllResidenciales);
+      //ruta POST residencial
+      router.post('/residenciales/create', residencialesController.create);
+      //ruta PUT residencial
+      router.put('/residenciales/update', residencialesController.update);
+      //ruta DELETE residencial
+      router.delete('/residenciales/delete/:idResidencia', residencialesController.delete);
+
     router.use(authenticateToken);
 
     // <-------------------------- TABLAS FUERTES -------------------------->
@@ -52,16 +65,7 @@ module.exports = (app) => {
     router.put('/telefonos/update/:idTelefono', telefonosController.update);
     router.delete('/telefonos/delete/:idTelefono', telefonosController.delete);
 
-    //ruta GET Residencial
-    router.get('/residenciales/get', residencialesController.find);
-    //ruta GETby Id Residencial
-    router.get('/residenciales/:idResidencia', residencialesController.findById);
-    //ruta POST residencial
-    router.post('/residenciales/create', residencialesController.create);
-    //ruta PUT residencial
-    router.put('/residenciales/update', residencialesController.update);
-    //ruta DELETE residencial
-    router.delete('/residenciales/delete/:idResidencia', residencialesController.delete);
+  
 
     // <-------------------------- TABLAS DEBILES -------------------------->
 
