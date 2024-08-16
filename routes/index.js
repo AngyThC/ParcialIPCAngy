@@ -33,6 +33,15 @@ module.exports = (app) => {
       //ruta DELETE residencial
       router.delete('/residenciales/delete/:idResidencia', residencialesController.delete);
 
+         // Rutas de Clientes (Protegidas)
+        router.get('/clientes', clientesController.find);
+        router.get('/clientes/:id', clientesController.findById);
+        router.get('/clientes', clientesController.findAllClientes);
+        router.post('/clientes/create', clientesController.create);
+        router.put('/clientes/update/:id', clientesController.update);
+        router.delete('/clientes/:id', clientesController.delete);      
+
+
     router.use(authenticateToken);
 
     // <-------------------------- TABLAS FUERTES -------------------------->
@@ -44,13 +53,7 @@ module.exports = (app) => {
     router.put('/usuarios/:id', usuariosController.update);
     router.delete('/usuarios/:id', usuariosController.delete);
 
-    // Rutas de Clientes (Protegidas)
-    router.get('/clientes', clientesController.find);
-    router.get('/clientes/:id', clientesController.findById);
-    router.post('/clientes', clientesController.create);
-    router.put('/clientes/:id', clientesController.update);
-    router.delete('/clientes/:id', clientesController.delete);
-
+ 
     // Rutas de Recargas (Protegidas)
     router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
     router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);

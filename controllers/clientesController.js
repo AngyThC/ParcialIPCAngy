@@ -36,6 +36,31 @@ module.exports = {
             });
     },
 
+       // Controlador - residencialesController.js
+    findAllClientes(req, res) {
+        return Clientes.findAll({
+            attributes: ['nombre', 'idCliente']
+        })
+        .then(clientes => {
+            // Si hay registros, los devolvemos
+            if (clientes.length > 0) {
+                return res.status(200).send(clientes);
+            } else {
+                // Si no hay registros, devolvemos un mensaje
+                return res.status(404).send({
+                    message: 'No se encontraron residenciales.'
+                });
+            }
+        })
+        .catch(error => {
+            // Si ocurre un error, lo manejamos aquí
+            console.error("Error al recuperar los datos:", error);
+            return res.status(500).send({
+                message: 'Ocurrió un error al recuperar los datos.'
+            });
+        });
+    },
+
     create(req, res) {
         let datos = req.body;
         const datos_ingreso = { 
