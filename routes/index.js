@@ -33,6 +33,7 @@ module.exports = (app) => {
   router.post('/usuarios/create', usuariosController.create);
   router.put('/usuarios/update/:id', usuariosController.update);
   router.delete('/usuarios/:id', usuariosController.delete);
+  
     // Rutas de Telefonos (Protegidas)
     router.get('/telefonos/get', telefonosController.find);
     router.get('/telefonos/:idTelefono', telefonosController.findById);
