@@ -47,6 +47,7 @@ module.exports = (app) => {
     router.post('/ventas/create', ventasController.createVenta); // Crear una nueva venta
     router.put('/ventas/update/:idVenta', ventasController.updateVenta); // Actualizar una venta por ID
     router.delete('/ventas/delete/:idVenta', ventasController.deleteVenta); // Eliminar una venta por ID
+    router.get('/ventas/getLast', ventasController.getLastVenta); // TRaer ultima venta
 
     // Rutas de Detalles de Ventas (Protegidas)
     router.get('/detalleventas/get', detalleVentasController.find);
