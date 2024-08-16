@@ -36,19 +36,15 @@ module.exports = {
     create(req, res) {
         let datos = req.body;
         const datos_ingreso = { 
+            direccion: datos.direccion || null,
             subtotal: datos.subtotal,
-            fechaInicio: datos.fechaInicio,
-            fechaFinal: datos.fechaFinal,
-            idTelefono: datos.idTelefono,
-            idRecarga: datos.idRecarga,
-            idResidencia: datos.idResidencia,
+            fechaInicio: datos.fechaInicio || null,
+            fechaFinal: datos.fechaFinal || null,
+            idTelefono: datos.idTelefono || null,
+            idRecarga: datos.idRecarga || null,
+            idResidencia: datos.idResidencia || null,
             idVenta: datos.idVenta,
         };
-    
-        // Solo agregar 'direccion' si está presente en el body
-        if (datos.direccion !== undefined) {
-            datos_ingreso.direccion = datos.direccion;
-        }
     
         DETALLEVENTAS.create(datos_ingreso)
         .then(detalle => {

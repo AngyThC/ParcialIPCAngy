@@ -34,23 +34,23 @@ module.exports = (sequelize, DataTypes) => {
     },
     fechaInicio: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     fechaFinal: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     idTelefono: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     idRecarga: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     idResidencia: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     idVenta: {
       type: DataTypes.INTEGER,
