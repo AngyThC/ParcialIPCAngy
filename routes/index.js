@@ -17,13 +17,7 @@ const detalleVentasController = require('../controllers/detalleventasController'
 module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
     router.post('/login', usuariosController.login);
-        // Rutas de Recargas (Protegidas)
-        router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
-        router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
-        router.get('/recargas', controllerRecarga.findAllRecargas);
-        router.post('/recargas/create', controllerRecarga.createRecarga);
-        router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
-        router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
+      
     
     // Aplicar el middleware de autenticación a partir de aquí
     // <---------------------------------------------------------------------------------------------------------------------------------------->
@@ -39,6 +33,14 @@ module.exports = (app) => {
       router.put('/residenciales/update', residencialesController.update);
       //ruta DELETE residencial
       router.delete('/residenciales/delete/:idResidencia', residencialesController.delete);
+      
+        // Rutas de Recargas (Protegidas)
+        router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
+        router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
+        router.get('/recargas', controllerRecarga.findAllRecargas);
+        router.post('/recargas/create', controllerRecarga.createRecarga);
+        router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
+        router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
 
          // Rutas de Clientes (Protegidas)
         router.get('/clientes', clientesController.find);
@@ -56,12 +58,7 @@ module.exports = (app) => {
     router.delete('/ventas/delete/:idVenta', ventasController.deleteVenta); // Eliminar una venta por ID
     router.get('/ventas/getLast', ventasController.getLastVenta); // TRaer ultima venta
 
-    // Rutas de Detalles de Ventas (Protegidas)
-    router.get('/detalleventas/get', detalleVentasController.find);
-    router.get('/detalleventas/:idDetalle', detalleVentasController.findById);
-    router.post('/detalleventas/create', detalleVentasController.create);
-    router.put('/detalleventas/update/:idDetalle', detalleVentasController.update);
-    router.delete('/detalleventas/delete/:idDetalle', detalleVentasController.delete);
+  
 
 
          // Rutas de Recargas (Protegidas)
