@@ -2,13 +2,12 @@
 const db = require("../models");
 const Clientes = db.clientes;
 
-// Métodos CRUD
 module.exports = {
 
     find(req, res) {
         return Clientes.findAll({
             where: {
-                estado: 1 // Filtrar por estado 1
+                estado: 1 
             }
         })
             .then(clientes => {
@@ -27,7 +26,7 @@ module.exports = {
             .then(cliente => {
                 if (!cliente) {
                     return res.status(404).send({
-                        message: 'Cliente no encontrado.'
+                        message: 'Emple no encontrado.'
                     });
                 }
                 return res.status(200).send(cliente);
@@ -43,7 +42,7 @@ module.exports = {
         return Clientes.findAll({
             attributes: ['nombre', 'idCliente'],
             where: {
-                estado: 1 // Filtrar por estado 1
+                estado: 1 
             }
         })
         .then(clientes => {
@@ -69,7 +68,7 @@ module.exports = {
             nombre: datos.nombre,
             dpi: datos.dpi,
             direccion: datos.direccion,
-            estado: 1 // Se asigna un valor predeterminado de 1 al crear
+            estado: 1 
         };
 
         Clientes.create(datos_ingreso)
@@ -91,7 +90,7 @@ module.exports = {
         if (datos.nombre !== undefined) camposActualizados.nombre = datos.nombre;
         if (datos.dpi !== undefined) camposActualizados.dpi = datos.dpi;
         if (datos.direccion !== undefined) camposActualizados.direccion = datos.direccion;
-        if (datos.estado !== undefined) camposActualizados.estado = datos.estado; // Permite actualizar el estado
+        if (datos.estado !== undefined) camposActualizados.estado = datos.estado; 
 
         return Clientes.update(
             camposActualizados,
