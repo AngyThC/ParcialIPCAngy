@@ -4,63 +4,72 @@ const db = require("../models");
 const RESIDENCIALES = db.residenciales;
 
 module.exports = {
-    find(req, res) {
-        return RESIDENCIALES.findAll()
-            .then(residenciales => {
-                // Desencriptar contraseñas si fuera necesario, pero en este caso no hay contraseñas
-                return res.status(200).send(residenciales);
-            })
-            .catch(error => {
-                return res.status(500).send({
-                    message: 'Ocurrió un error al recuperar los datos.'
-                });
+    async find(req, res) {
+        try {
+            // Consultar solo residenciales con estado = 1
+            const residenciales = await RESIDENCIALES.findAll({
+                where: { estado: 1 }
             });
+
+            if (residenciales.length === 0) {
+                return res.status(404).send({
+                    message: 'No se encontraron residenciales con estado activo.'
+                });
+            }
+
+            return res.status(200).send(residenciales);
+        } catch (error) {
+            console.error('Error al recuperar los datos:', error);
+            return res.status(500).send({
+                message: 'Ocurrió un error al recuperar los datos.'
+            });
+        }
     },
 
-    findById(req, res) {
+    async findById(req, res) {
         const id = req.params.idResidencia; 
-        return RESIDENCIALES.findByPk(id)
-            .then(residencial => {
-                if (!residencial) {
-                    return res.status(404).send({
-                        message: 'Residencia no encontrada.'
-                    });
-                }
-                return res.status(200).send(residencial);
-            })
-            .catch(error => {
-                return res.status(500).send({
-                    message: 'Ocurrió un error al intentar recuperar el registro.'
+        try {
+            const residencial = await RESIDENCIALES.findByPk(id);
+
+            if (!residencial) {
+                return res.status(404).send({
+                    message: 'Residencia no encontrada.'
                 });
+            }
+            return res.status(200).send(residencial);
+        } catch (error) {
+            console.error('Error al intentar recuperar el registro:', error);
+            return res.status(500).send({
+                message: 'Ocurrió un error al intentar recuperar el registro.'
             });
+        }
     },
 
-    findAllResidenciales(req, res) {
-        return RESIDENCIALES.findAll({
-            attributes: ['idResidencia', 'nombrePlan']
-        })
-        .then(residenciales => {
-            // Si hay registros, los devolvemos
+    async findAllResidenciales(req, res) {
+        try {
+            // Consultar solo residenciales con estado = 1 y solo los atributos necesarios
+            const residenciales = await RESIDENCIALES.findAll({
+                attributes: ['idResidencia', 'nombrePlan'],
+                where: { estado: 1 }
+            });
+
             if (residenciales.length > 0) {
                 return res.status(200).send(residenciales);
             } else {
-                // Si no hay registros, devolvemos un mensaje
                 return res.status(404).send({
-                    message: 'No se encontraron residenciales.'
+                    message: 'No se encontraron residenciales con estado activo.'
                 });
             }
-        })
-        .catch(error => {
-            // Si ocurre un error, lo manejamos aquí
+        } catch (error) {
             console.error("Error al recuperar los datos:", error);
             return res.status(500).send({
                 message: 'Ocurrió un error al recuperar los datos.'
             });
-        });
+        }
     },
 
-    create(req, res) {
-        let datos = req.body;
+    async create(req, res) {
+        const datos = req.body;
         const datos_ingreso = { 
             nombrePlan: datos.nombrePlan,
             precio: datos.precio,
@@ -70,17 +79,16 @@ module.exports = {
             estado: 1 // Se asigna un valor predeterminado de 1 al crear
         };
 
-        RESIDENCIALES.create(datos_ingreso)
-        .then(residencial => {
-            res.status(201).send(residencial);
-        })
-        .catch(error => {
-            console.log(error);
+        try {
+            const nuevaResidencial = await RESIDENCIALES.create(datos_ingreso);
+            return res.status(201).send(nuevaResidencial);
+        } catch (error) {
+            console.error('Error al insertar residencia:', error);
             return res.status(500).json({ error: 'Error al insertar residencia' });
-        });
+        }
     },
 
-    update(req, res) {
+    async update(req, res) {
         const datos = req.body;
         const id = datos.idResidencia;
 
@@ -93,22 +101,19 @@ module.exports = {
         if (datos.velocidadInternet !== undefined) camposActualizados.velocidadInternet = datos.velocidadInternet;
         if (datos.estado !== undefined) camposActualizados.estado = datos.estado; // Permite actualizar el estado
 
-        return RESIDENCIALES.update(
-            camposActualizados,
-            {
+        try {
+            const [rowsUpdated] = await RESIDENCIALES.update(camposActualizados, {
                 where: { idResidencia: id } 
-            }
-        )
-        .then(([rowsUpdated]) => {
+            });
+
             if (rowsUpdated === 0) {
                 return res.status(404).send({ message: 'Residencia no encontrada' });
             }
             return res.status(200).send('El registro ha sido actualizado');
-        })
-        .catch(error => {
-            console.log(error);
+        } catch (error) {
+            console.error('Error al actualizar:', error);
             return res.status(500).json({ error: 'Error al actualizar' });
-        });
+        }
     },
 
     async delete(req, res) {

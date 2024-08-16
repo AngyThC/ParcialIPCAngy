@@ -4,7 +4,11 @@ const Telefonos = db.Telefonos;
 
 module.exports = {
     find(req, res) {
-        return Telefonos.findAll()
+        return Telefonos.findAll({
+            where: {
+                estado: 1 // Filtrar por estado 1
+            }
+        })
             .then(telefonos => {
                 return res.status(200).send(telefonos);
             })

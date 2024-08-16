@@ -7,7 +7,9 @@ module.exports = {
   async getAllRecargas(req, res) { // getAll recargas
     try {
       // console.log('Iniciando consulta de recargas...'); // Registro de inicio
-      const recargas = await Recarga.findAll();
+      const recargas = await Recarga.findAll({
+        where: { estado: 1 } // Filtrar solo las recargas con estado = 1
+      });
 
       if (recargas.length === 0) {
         // console.log('No se encontraron recargas.'); // Registro cuando no hay datos

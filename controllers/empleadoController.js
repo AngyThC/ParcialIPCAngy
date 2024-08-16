@@ -6,7 +6,9 @@ const Empleado = db.empleados;
 module.exports = {
   async getAllEmpleados(req, res) { // getAll empleados
     try {
-      const empleados = await Empleado.findAll();
+      const empleados = await Empleado.findAll({
+        where: { estado: 1 } // Filtrar solo los empleados con estado = 1
+      });
 
       if (empleados.length === 0) {
         return res.status(404).json({ message: 'No se encontraron empleados' });

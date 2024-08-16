@@ -26,7 +26,7 @@ function generateToken(user) {
 }
 
 module.exports = {
-    //METODO LOGIN
+    // Método LOGIN
     login(req, res) {
         const { usuario, contrasenia } = req.body;
 
@@ -62,9 +62,13 @@ module.exports = {
         });
     },
 
-    //METODOS CRUD
+    // Métodos CRUD
     find(req, res) {
-        return Usuarios.findAll()
+        return Usuarios.findAll({
+            where: {
+                estado: 1 // Filtrar por estado 1
+            }
+        })
             .then(usuarios => {
                 // Desencriptar contraseñas
                 usuarios = usuarios.map(usuario => {

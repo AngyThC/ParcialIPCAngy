@@ -1,5 +1,4 @@
 'use strict';
-const Sequelize = require('sequelize');
 const db = require("../models");
 const Clientes = db.clientes;
 
@@ -7,7 +6,11 @@ const Clientes = db.clientes;
 module.exports = {
 
     find(req, res) {
-        return Clientes.findAll()
+        return Clientes.findAll({
+            where: {
+                estado: 1 // Filtrar por estado 1
+            }
+        })
             .then(clientes => {
                 return res.status(200).send(clientes);
             })
@@ -19,7 +22,7 @@ module.exports = {
     },
 
     findById(req, res) {
-        const id = req.params.id; 
+        const id = req.params.id;
         return Clientes.findByPk(id)
             .then(cliente => {
                 if (!cliente) {
@@ -38,7 +41,10 @@ module.exports = {
 
     findAllClientes(req, res) {
         return Clientes.findAll({
-            attributes: ['nombre', 'idCliente']
+            attributes: ['nombre', 'idCliente'],
+            where: {
+                estado: 1 // Filtrar por estado 1
+            }
         })
         .then(clientes => {
             if (clientes.length > 0) {
