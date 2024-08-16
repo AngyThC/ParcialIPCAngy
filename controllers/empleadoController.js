@@ -45,7 +45,7 @@ module.exports = {
   
       const nuevoEmpleado = await Empleado.create({
         salario,
-        salarioTotal,
+        salarioTotal: salario, // Asigna el mismo valor de salario a salarioTotal
         comision,
         nombre,
         dpi,
