@@ -75,7 +75,8 @@ module.exports = {
         minutosLlamada,
         aplicaciones,
         dias,
-        nombrePlan
+        nombrePlan, 
+        estado: 1
       });
 
       res.status(201).json({ message: 'Recarga creada exitosamente', recarga: nuevaRecarga });
