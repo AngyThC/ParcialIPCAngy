@@ -20,53 +20,7 @@ module.exports = (app) => {
       
     
     // Aplicar el middleware de autenticación a partir de aquí
-    // <---------------------------------------------------------------------------------------------------------------------------------------->
-      //ruta GET Residencial
-      router.get('/residenciales/get', residencialesController.find);
-      //ruta GETby Id Residencial
-      router.get('/residenciales/:idResidencia', residencialesController.findById);
-      //ruta GETByNOmbrePlan
-      router.get('/residenciales', residencialesController.findAllResidenciales);
-      //ruta POST residencial
-      router.post('/residenciales/create', residencialesController.create);
-      //ruta PUT residencial
-      router.put('/residenciales/update', residencialesController.update);
-      //ruta DELETE residencial
-      router.delete('/residenciales/delete/:idResidencia', residencialesController.delete);
-      
-        // Rutas de Recargas (Protegidas)
-        router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
-        router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
-        router.get('/recargas', controllerRecarga.findAllRecargas);
-        router.post('/recargas/create', controllerRecarga.createRecarga);
-        router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
-        router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
-
-         // Rutas de Clientes (Protegidas)
-        router.get('/clientes', clientesController.find);
-        router.get('/clientes/:id', clientesController.findById);
-        router.get('/clientes', clientesController.findAllClientes);
-        router.post('/clientes/create', clientesController.create);
-        router.put('/clientes/update/:id', clientesController.update);
-        router.delete('/clientes/:id', clientesController.delete);    
-        
-        // Rutas de Ventas
-    router.get('/ventas/get', ventasController.getAllVentas); // Obtener todas las ventas
-    router.get('/ventas/:idVenta', ventasController.getVentaById); // Obtener una venta por ID
-    router.post('/ventas/create', ventasController.createVenta); // Crear una nueva venta
-    router.put('/ventas/update/:idVenta', ventasController.updateVenta); // Actualizar una venta por ID
-    router.delete('/ventas/delete/:idVenta', ventasController.deleteVenta); // Eliminar una venta por ID
-    router.get('/ventas/getLast', ventasController.getLastVenta); // TRaer ultima venta
-
-  
-
-
-         // Rutas de Recargas (Protegidas)
-        router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
-        router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
-        router.post('/recargas/create', controllerRecarga.createRecarga);
-        router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
-        router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
+    // <---------------------------------------------------------------------------------------------------------------------------------------->    
 
     router.use(authenticateToken);
 
@@ -86,6 +40,34 @@ module.exports = (app) => {
     router.put('/telefonos/update/:idTelefono', telefonosController.update);
     router.delete('/telefonos/delete/:idTelefono', telefonosController.delete);
 
+    // Rutas de Recargas (Protegidas)
+    router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
+    router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
+    router.post('/recargas/create', controllerRecarga.createRecarga);
+    router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
+    router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
+
+    // Rutas de Clientes (Protegidas)
+    router.get('/clientes', clientesController.find);
+    router.get('/clientes/:id', clientesController.findById);
+    router.get('/clientes', clientesController.findAllClientes);
+    router.post('/clientes/create', clientesController.create);
+    router.put('/clientes/update/:id', clientesController.update);
+    router.delete('/clientes/:id', clientesController.delete);
+
+    //ruta GET Residencial
+    router.get('/residenciales/get', residencialesController.find);
+    //ruta GETby Id Residencial
+    router.get('/residenciales/:idResidencia', residencialesController.findById);
+    //ruta GETByNOmbrePlan
+    router.get('/residenciales', residencialesController.findAllResidenciales);
+    //ruta POST residencial
+    router.post('/residenciales/create', residencialesController.create);
+    //ruta PUT residencial
+    router.put('/residenciales/update', residencialesController.update);
+    //ruta DELETE residencial
+    router.delete('/residenciales/delete/:idResidencia', residencialesController.delete);
+
   
 
     // <-------------------------- TABLAS DEBILES -------------------------->
@@ -97,6 +79,20 @@ module.exports = (app) => {
     router.put('/empleados/update/:idEmpleado', controllerEmpleado.updateEmpleadoWithID); // actualizar por id de empleado
     router.delete('/empleados/delete/:idEmpleado', controllerEmpleado.deleteEmpleadoWithID); // eliminar por id de empleado
 
+    // Rutas de Ventas
+    router.get('/ventas/get', ventasController.getAllVentas); // Obtener todas las ventas
+    router.get('/ventas/:idVenta', ventasController.getVentaById); // Obtener una venta por ID
+    router.post('/ventas/create', ventasController.createVenta); // Crear una nueva venta
+    router.put('/ventas/update/:idVenta', ventasController.updateVenta); // Actualizar una venta por ID
+    router.delete('/ventas/delete/:idVenta', ventasController.deleteVenta); // Eliminar una venta por ID
+    router.get('/ventas/getLast', ventasController.getLastVenta); // TRaer ultima venta
+
+    // Rutas de Detalles de Ventas (Protegidas)
+    router.get('/detalleventas/get', detalleVentasController.find);
+    router.get('/detalleventas/:idDetalle', detalleVentasController.findById);
+    router.post('/detalleventas/create', detalleVentasController.create);
+    router.put('/detalleventas/update/:idDetalle', detalleVentasController.update);
+    router.delete('/detalleventas/delete/:idDetalle', detalleVentasController.delete);
     
 
     // Utilizar el enrutador en la aplicación
