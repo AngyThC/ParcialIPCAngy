@@ -2,6 +2,10 @@
 const Sequelize = require('sequelize');
 const db = require("../models");
 const DETALLEVENTAS = db.detalle_ventas;
+const Recarga = db.Recarga;
+const Residenciales = db.residenciales;
+const Telefonos = db.Telefonos;
+const Venta = db.ventas;
 
 module.exports = {
     // Método para obtener todos los detalles de venta
@@ -33,27 +37,54 @@ module.exports = {
     },
 
     // Método para crear un nuevo detalle de venta
-    create(req, res) {
+    async create(req, res) {
         let datos = req.body;
-        const datos_ingreso = { 
-            direccion: datos.direccion || null,
-            subtotal: datos.subtotal,
-            fechaInicio: datos.fechaInicio || null,
-            fechaFinal: datos.fechaFinal || null,
-            idTelefono: datos.idTelefono || null,
-            idRecarga: datos.idRecarga || null,
-            idResidencia: datos.idResidencia || null,
-            idVenta: datos.idVenta,
-        };
     
-        DETALLEVENTAS.create(datos_ingreso)
-        .then(detalle => {
+        try {
+            let subtotal = 0;
+    
+            if (datos.idRecarga) {
+                const recarga = await Recarga.findOne({ where: { idRecarga: datos.idRecarga } });
+                if (recarga) subtotal = recarga.precio;
+            }
+    
+            if (datos.idResidencia) {
+                const residencia = await Residenciales.findOne({ where: { idResidencia: datos.idResidencia } });
+                if (residencia) subtotal = residencia.precio;
+            }
+    
+            if (datos.idTelefono) {
+                const telefono = await Telefonos.findOne({ where: { idTelefono: datos.idTelefono } });
+                if (telefono) subtotal = telefono.precio;
+            }
+    
+            // Formatear las fechas si están presentes
+            const fechaInicio = datos.fechaInicio ? new Date(datos.fechaInicio).toISOString().split('T')[0] : null;
+            const fechaFinal = datos.fechaFinal ? new Date(datos.fechaFinal).toISOString().split('T')[0] : null;
+    
+            const datos_ingreso = { 
+                direccion: datos.direccion || null,
+                subtotal: subtotal,  // Asigna el subtotal calculado
+                fechaInicio: fechaInicio, // Fecha formateada
+                fechaFinal: fechaFinal,   // Fecha formateada
+                idTelefono: datos.idTelefono || null,
+                idRecarga: datos.idRecarga || null,
+                idResidencia: datos.idResidencia || null,
+                idVenta: datos.idVenta,
+            };
+    
+            // Crear el detalle de venta
+            const detalle = await DETALLEVENTAS.create(datos_ingreso);
+    
+            // Actualizar el total en la tabla ventas sumando los subtotales de todos los detalles de la misma venta
+            const totalVenta = await DETALLEVENTAS.sum('subtotal', { where: { idVenta: datos.idVenta } });
+            await Venta.update({ total: totalVenta }, { where: { idVenta: datos.idVenta } });
+    
             res.send(detalle);
-        })
-        .catch(error => {
+        } catch (error) {
             console.log(error);
             return res.status(500).json({ error: 'Error al insertar detalle de venta' });
-        });
+        }
     },
 
     // Método para actualizar un detalle de venta por su ID

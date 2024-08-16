@@ -39,7 +39,21 @@ module.exports = (app) => {
         router.get('/clientes', clientesController.findAllClientes);
         router.post('/clientes/create', clientesController.create);
         router.put('/clientes/update/:id', clientesController.update);
-        router.delete('/clientes/:id', clientesController.delete);      
+        router.delete('/clientes/:id', clientesController.delete);    
+        
+        // Rutas de Ventas
+    router.get('/ventas/get', ventasController.getAllVentas); // Obtener todas las ventas
+    router.get('/ventas/:idVenta', ventasController.getVentaById); // Obtener una venta por ID
+    router.post('/ventas/create', ventasController.createVenta); // Crear una nueva venta
+    router.put('/ventas/update/:idVenta', ventasController.updateVenta); // Actualizar una venta por ID
+    router.delete('/ventas/delete/:idVenta', ventasController.deleteVenta); // Eliminar una venta por ID
+
+    // Rutas de Detalles de Ventas (Protegidas)
+    router.get('/detalleventas/get', detalleVentasController.find);
+    router.get('/detalleventas/:idDetalle', detalleVentasController.findById);
+    router.post('/detalleventas/create', detalleVentasController.create);
+    router.put('/detalleventas/update/:idDetalle', detalleVentasController.update);
+    router.delete('/detalleventas/delete/:idDetalle', detalleVentasController.delete);
 
          // Rutas de Recargas (Protegidas)
         router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
@@ -77,19 +91,7 @@ module.exports = (app) => {
     router.put('/empleados/update/:idEmpleado', controllerEmpleado.updateEmpleadoWithID); // actualizar por id de empleado
     router.delete('/empleados/delete/:idEmpleado', controllerEmpleado.deleteEmpleadoWithID); // eliminar por id de empleado
 
-    // Rutas de Ventas
-    router.get('/ventas/get', ventasController.getAllVentas); // Obtener todas las ventas
-    router.get('/ventas/:idVenta', ventasController.getVentaById); // Obtener una venta por ID
-    router.post('/ventas/create', ventasController.createVenta); // Crear una nueva venta
-    router.put('/ventas/update/:idVenta', ventasController.updateVenta); // Actualizar una venta por ID
-    router.delete('/ventas/delete/:idVenta', ventasController.deleteVenta); // Eliminar una venta por ID
-
-    // Rutas de Detalles de Ventas (Protegidas)
-    router.get('/detalleventas/get', detalleVentasController.find);
-    router.get('/detalleventas/:idDetalle', detalleVentasController.findById);
-    router.post('/detalleventas/create', detalleVentasController.create);
-    router.put('/detalleventas/update/:idDetalle', detalleVentasController.update);
-    router.delete('/detalleventas/delete/:idDetalle', detalleVentasController.delete);
+    
 
     // Utilizar el enrutador en la aplicación
     app.use('/', router);
