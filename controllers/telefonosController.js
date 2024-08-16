@@ -17,7 +17,7 @@ module.exports = {
     },
 
     findById(req, res) {
-        const id = req.params.idTelefono; 
+        const id = req.params.idTelefono;
         return Telefonos.findByPk(id)
             .then(telefono => {
                 if (!telefono) {
@@ -35,11 +35,12 @@ module.exports = {
 
     create(req, res) {
         const datos = req.body;
-        const datos_ingreso = { 
+        const datos_ingreso = {
             nombre: datos.nombre,
             modelo: datos.modelo,
             especificaciones: datos.especificaciones,
             precio: datos.precio,
+            estado: 1 // Se asigna un valor predeterminado de 1 al crear
         };
 
         Telefonos.create(datos_ingreso)
@@ -55,18 +56,19 @@ module.exports = {
     update(req, res) {
         const datos = req.body;
         const id = req.params.idTelefono;
-    
+
         const camposActualizados = {};
-    
+
         if (datos.nombre !== undefined) camposActualizados.nombre = datos.nombre;
         if (datos.modelo !== undefined) camposActualizados.modelo = datos.modelo;
         if (datos.especificaciones !== undefined) camposActualizados.especificaciones = datos.especificaciones;
         if (datos.precio !== undefined) camposActualizados.precio = datos.precio;
-    
+        if (datos.estado !== undefined) camposActualizados.estado = datos.estado; // Permite actualizar el estado
+
         return Telefonos.update(
             camposActualizados,
             {
-                where: { idTelefono: id } 
+                where: { idTelefono: id }
             }
         )
         .then(([rowsUpdated]) => {
@@ -82,15 +84,15 @@ module.exports = {
     },
 
     async delete(req, res) {
-        const id = req.params.idTelefono; 
-    
+        const id = req.params.idTelefono;
+
         try {
             const telefono = await Telefonos.findByPk(id);
-    
+
             if (!telefono) {
                 return res.status(404).json({ error: 'Teléfono no encontrado' });
             }
-    
+
             await telefono.destroy();
             return res.json({ message: 'Teléfono eliminado correctamente' });
         } catch (error) {

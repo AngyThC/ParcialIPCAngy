@@ -51,10 +51,14 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.DATEONLY,
     allowNull: false
     },
+    estado: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     idUsuario: {
         type: DataTypes.INTEGER,
         allowNull: false
-      },
+    },
   }, {
     sequelize,
     modelName: 'empleados', // Nombre del modelo definido

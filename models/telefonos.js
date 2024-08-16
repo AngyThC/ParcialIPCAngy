@@ -32,7 +32,11 @@ module.exports = (sequelize) => {
     precio: {
       type: DataTypes.DECIMAL(6, 2),
       allowNull: false
-    }
+    },
+    estado: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'Telefonos',

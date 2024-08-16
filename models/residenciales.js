@@ -35,7 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     velocidadInternet: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }
+    },
+    estado: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'residenciales',

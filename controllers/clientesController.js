@@ -36,24 +36,20 @@ module.exports = {
             });
     },
 
-       // Controlador - residencialesController.js
     findAllClientes(req, res) {
         return Clientes.findAll({
             attributes: ['nombre', 'idCliente']
         })
         .then(clientes => {
-            // Si hay registros, los devolvemos
             if (clientes.length > 0) {
                 return res.status(200).send(clientes);
             } else {
-                // Si no hay registros, devolvemos un mensaje
                 return res.status(404).send({
-                    message: 'No se encontraron residenciales.'
+                    message: 'No se encontraron clientes.'
                 });
             }
         })
         .catch(error => {
-            // Si ocurre un error, lo manejamos aquí
             console.error("Error al recuperar los datos:", error);
             return res.status(500).send({
                 message: 'Ocurrió un error al recuperar los datos.'
@@ -66,7 +62,8 @@ module.exports = {
         const datos_ingreso = { 
             nombre: datos.nombre,
             dpi: datos.dpi,
-            direccion: datos.direccion
+            direccion: datos.direccion,
+            estado: 1 // Se asigna un valor predeterminado de 1 al crear
         };
 
         Clientes.create(datos_ingreso)
@@ -88,6 +85,7 @@ module.exports = {
         if (datos.nombre !== undefined) camposActualizados.nombre = datos.nombre;
         if (datos.dpi !== undefined) camposActualizados.dpi = datos.dpi;
         if (datos.direccion !== undefined) camposActualizados.direccion = datos.direccion;
+        if (datos.estado !== undefined) camposActualizados.estado = datos.estado; // Permite actualizar el estado
 
         return Clientes.update(
             camposActualizados,
@@ -95,7 +93,12 @@ module.exports = {
                 where: { idCliente: id } 
             }
         )
-        .then(() => res.status(200).send('El cliente ha sido actualizado'))
+        .then(([rowsUpdated]) => {
+            if (rowsUpdated === 0) {
+                return res.status(404).send({ message: 'Cliente no encontrado' });
+            }
+            return res.status(200).send('El cliente ha sido actualizado');
+        })
         .catch(error => {
             console.log(error);
             return res.status(500).json({ error: 'Error al actualizar cliente' });

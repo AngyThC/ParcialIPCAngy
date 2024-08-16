@@ -49,7 +49,8 @@ module.exports = {
         minutosLlamada,
         aplicaciones,
         dias,
-        nombrePlan
+        nombrePlan,
+        estado: 1 // Se asigna un valor predeterminado de 1 al crear
       });
 
       res.status(201).json({ message: 'Recarga creada exitosamente', recarga: nuevaRecarga });
@@ -61,7 +62,7 @@ module.exports = {
 
   async updateRecarga(req, res) {
     const { idRecarga } = req.params;
-    const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan } = req.body;
+    const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan, estado } = req.body;
 
     try {
       const recarga = await Recarga.findOne({ where: { idRecarga } });
@@ -77,6 +78,7 @@ module.exports = {
       if (aplicaciones !== undefined) recarga.aplicaciones = aplicaciones;
       if (dias !== undefined) recarga.dias = dias;
       if (nombrePlan !== undefined) recarga.nombrePlan = nombrePlan;
+      if (estado !== undefined) recarga.estado = estado; // Permite actualizar el estado
 
       await recarga.save();
 
