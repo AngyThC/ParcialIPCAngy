@@ -1,4 +1,5 @@
 'use strict';
+const { QueryTypes } = require('sequelize');
 const Sequelize = require('sequelize');
 const db = require('../models');
 const Venta = db.ventas;
@@ -132,6 +133,24 @@ module.exports = {
     } catch (error) {
       console.error('Error al eliminar la venta:', error);
       res.status(500).json({ error: 'Error al eliminar la venta' });
+    }
+  },
+
+  // Agrega esta función a tu controlador
+  async getLastVenta(req, res) {
+    try {
+      const lastVenta = await Venta.findOne({
+        order: [['idVenta', 'DESC']]
+      });
+
+      if (!lastVenta) {
+        return res.status(404).json({ message: 'No se encontró ninguna venta' });
+      }
+
+      res.status(200).json(lastVenta);
+    } catch (error) {
+      console.error('Error al obtener la última venta:', error);
+      res.status(500).json({ error: 'Error al obtener la última venta' });
     }
   }
 }
