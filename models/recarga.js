@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     precio: {
-      type: DataTypes.DECIMAL(6, 2),
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
     internet: {

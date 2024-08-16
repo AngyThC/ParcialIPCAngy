@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     subtotal: {
-      type: DataTypes.DECIMAL(6, 2),
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
     fechaInicio: {

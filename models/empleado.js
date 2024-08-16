@@ -24,11 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     salario: {
-      type: DataTypes.DECIMAL(6,2),
+      type: DataTypes.DECIMAL(10,2),
       allowNull: false
     },
     salarioTotal: {
-        type: DataTypes.DECIMAL(6,2),
+        type: DataTypes.DECIMAL(10,2),
         allowNull: true
       },
     comision: {
