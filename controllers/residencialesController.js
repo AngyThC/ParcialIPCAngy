@@ -33,6 +33,7 @@ module.exports = {
     create (req, res) {
         let datos = req.body 
         const datos_ingreso = { 
+            nombrePlan: datos.nombrePlan,
             precio: datos.precio,
             televisores: datos.televisores,
             telefonoFijo: datos.telefonoFijo,
