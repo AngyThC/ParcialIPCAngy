@@ -1,35 +1,35 @@
 'use strict';
 const db = require("../models");
-const Clientes = db.clientes;
+const Empleados = db.empleados;
 
 module.exports = {
 
     find(req, res) {
-        return Clientes.findAll({
+        return Empleados.findAll({
             where: {
                 estado: 1 
             }
         })
-            .then(clientes => {
-                return res.status(200).send(clientes);
-            })
-            .catch(error => {
-                return res.status(500).send({
-                    message: 'Ocurrió un error al recuperar los datos.'
-                });
+        .then(empleados => {
+            return res.status(200).send(empleados);
+        })
+        .catch(error => {
+            return res.status(500).send({
+                message: 'Ocurrió un error al recuperar los datos de empleados.'
             });
+        });
     },
 
     findById(req, res) {
         const id = req.params.id;
-        return Clientes.findByPk(id)
-            .then(cliente => {
-                if (!cliente) {
+        return Empleados.findByPk(id)
+            .then(empleado => {
+                if (!empleado) {
                     return res.status(404).send({
-                        message: 'Emple no encontrado.'
+                        message: 'Empleado no encontrado.'
                     });
                 }
-                return res.status(200).send(cliente);
+                return res.status(200).send(empleado);
             })
             .catch(error => {
                 return res.status(500).send({
@@ -38,26 +38,27 @@ module.exports = {
             });
     },
 
-    findAllClientes(req, res) {
-        return Clientes.findAll({
-            attributes: ['nombre', 'idCliente'],
+
+    findAllEmpleados(req, res) {
+        return Empleados.findAll({
+            attributes: ['nombre', 'idEmpleado'],
             where: {
                 estado: 1 
             }
         })
-        .then(clientes => {
-            if (clientes.length > 0) {
-                return res.status(200).send(clientes);
+        .then(empleados => {
+            if (empleados.length > 0) {
+                return res.status(200).send(empleados);
             } else {
                 return res.status(404).send({
-                    message: 'No se encontraron clientes.'
+                    message: 'No se encontraron empleados.'
                 });
             }
         })
         .catch(error => {
             console.error("Error al recuperar los datos:", error);
             return res.status(500).send({
-                message: 'Ocurrió un error al recuperar los datos.'
+                message: 'Ocurrió un error al recuperar los datos de empleados.'
             });
         });
     },
@@ -66,20 +67,25 @@ module.exports = {
         let datos = req.body;
         const datos_ingreso = { 
             nombre: datos.nombre,
-            dpi: datos.dpi,
-            direccion: datos.direccion,
-            estado: 1 
+            apellido: datos.apellido,
+            telefono: datos.telefono,
+            email: datos.email,
+            fechaNacimiento: datos.fechaNacimiento,
+            tipoTrabajo: datos.tipoTrabajo,
+            estado: 1, 
+            idProyecto: datos.idProyecto || null
         };
 
-        Clientes.create(datos_ingreso)
-        .then(cliente => {
-            res.status(201).send(cliente);
+        Empleados.create(datos_ingreso)
+        .then(empleado => {
+            res.status(201).send(empleado);
         })
         .catch(error => {
             console.log(error);
-            return res.status(500).json({ error: 'Error al insertar cliente' });
+            return res.status(500).json({ error: 'Error al insertar empleado' });
         });
     },
+
 
     update(req, res) {
         const datos = req.body;
@@ -88,25 +94,29 @@ module.exports = {
         const camposActualizados = {};
     
         if (datos.nombre !== undefined) camposActualizados.nombre = datos.nombre;
-        if (datos.dpi !== undefined) camposActualizados.dpi = datos.dpi;
-        if (datos.direccion !== undefined) camposActualizados.direccion = datos.direccion;
+        if (datos.apellido !== undefined) camposActualizados.apellido = datos.apellido;
+        if (datos.telefono !== undefined) camposActualizados.telefono = datos.telefono;
+        if (datos.email !== undefined) camposActualizados.email = datos.email;
+        if (datos.fechaNacimiento !== undefined) camposActualizados.fechaNacimiento = datos.fechaNacimiento;
+        if (datos.tipoTrabajo !== undefined) camposActualizados.tipoTrabajo = datos.tipoTrabajo;
         if (datos.estado !== undefined) camposActualizados.estado = datos.estado; 
+        if (datos.idProyecto !== undefined) camposActualizados.idProyecto = datos.idProyecto; 
 
-        return Clientes.update(
+        return Empleados.update(
             camposActualizados,
             {
-                where: { idCliente: id } 
+                where: { idEmpleado: id } 
             }
         )
         .then(([rowsUpdated]) => {
             if (rowsUpdated === 0) {
-                return res.status(404).send({ message: 'Cliente no encontrado' });
+                return res.status(404).send({ message: 'Empleado no encontrado' });
             }
-            return res.status(200).send('El cliente ha sido actualizado');
+            return res.status(200).send('El empleado ha sido actualizado');
         })
         .catch(error => {
             console.log(error);
-            return res.status(500).json({ error: 'Error al actualizar cliente' });
+            return res.status(500).json({ error: 'Error al actualizar empleado' });
         });
     },    
 
@@ -114,17 +124,17 @@ module.exports = {
         const id = req.params.id; 
     
         try {
-            const cliente = await Clientes.findByPk(id);
+            const empleado = await Empleados.findByPk(id);
     
-            if (!cliente) {
-                return res.status(404).json({ error: 'Cliente no encontrado' });
+            if (!empleado) {
+                return res.status(404).json({ error: 'Empleado no encontrado' });
             }
     
-            await cliente.destroy();
-            return res.json({ message: 'Cliente eliminado correctamente' });
+            await empleado.destroy();
+            return res.json({ message: 'Empleado eliminado correctamente' });
         } catch (error) {
-            console.error('Error al eliminar cliente:', error);
-            return res.status(500).json({ error: 'Error al eliminar cliente' });
+            console.error('Error al eliminar empleado:', error);
+            return res.status(500).json({ error: 'Error al eliminar empleado' });
         }
     }
 };
