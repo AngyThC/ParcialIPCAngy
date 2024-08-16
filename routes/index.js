@@ -19,6 +19,7 @@ module.exports = (app) => {
     router.post('/login', usuariosController.login);
       
     
+  
     // Aplicar el middleware de autenticación a partir de aquí
     // <---------------------------------------------------------------------------------------------------------------------------------------->    
 
@@ -26,13 +27,12 @@ module.exports = (app) => {
 
     // <-------------------------- TABLAS FUERTES -------------------------->
 
-    // Rutas de Usuarios (Protegidas)
-    router.get('/usuarios', usuariosController.find);
-    router.get('/usuarios/:id', usuariosController.findById);
-    router.post('/usuarios', usuariosController.create);
-    router.put('/usuarios/:id', usuariosController.update);
-    router.delete('/usuarios/:id', usuariosController.delete);
-
+  // Rutas de Usuarios (Protegidas)
+  router.get('/usuarios', usuariosController.find);
+  router.get('/usuarios/:id', usuariosController.findById);
+  router.post('/usuarios/create', usuariosController.create);
+  router.put('/usuarios/update/:id', usuariosController.update);
+  router.delete('/usuarios/:id', usuariosController.delete);
     // Rutas de Telefonos (Protegidas)
     router.get('/telefonos/get', telefonosController.find);
     router.get('/telefonos/:idTelefono', telefonosController.findById);
