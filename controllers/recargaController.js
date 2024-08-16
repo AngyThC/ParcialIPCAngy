@@ -41,6 +41,30 @@ module.exports = {
     }
   },
 
+  findAllRecargas(req, res) {
+    return Recarga.findAll({
+        attributes: ['nombrePlan', 'idRecarga'],
+        where: {
+            estado: 1 // Filtrar por estado 1
+        }
+    })
+    .then(recargas => {
+        if (recargas.length > 0) {
+            return res.status(200).send(recargas);
+        } else {
+            return res.status(404).send({
+                message: 'No se encontraron recargas.'
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error al recuperar los datos:", error);
+        return res.status(500).send({
+            message: 'Ocurrió un error al recuperar los datos.'
+        });
+    });
+}
+,
   async createRecarga(req, res) { // create de recargas
     const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan } = req.body;
 

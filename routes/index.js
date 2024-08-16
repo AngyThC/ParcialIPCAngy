@@ -17,6 +17,13 @@ const detalleVentasController = require('../controllers/detalleVentasController'
 module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
     router.post('/login', usuariosController.login);
+        // Rutas de Recargas (Protegidas)
+        router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
+        router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
+        router.get('/recargas', controllerRecarga.findAllRecargas);
+        router.post('/recargas/create', controllerRecarga.createRecarga);
+        router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
+        router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
     
     // Aplicar el middleware de autenticación a partir de aquí
     // <---------------------------------------------------------------------------------------------------------------------------------------->
@@ -41,13 +48,7 @@ module.exports = (app) => {
         router.put('/clientes/update/:id', clientesController.update);
         router.delete('/clientes/:id', clientesController.delete);      
 
-    // Rutas de Recargas (Protegidas)
-    router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
-    router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
-    router.get('/recargas/getIdf/:idRecarga', controllerRecarga.findAllRecargas);
-    router.post('/recargas/create', controllerRecarga.createRecarga);
-    router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
-    router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
+
          // Rutas de Recargas (Protegidas)
         router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
         router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
