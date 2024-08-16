@@ -29,26 +29,27 @@ module.exports = {
     // Método LOGIN
     login(req, res) {
         const { usuario, contrasenia } = req.body;
-
+    
         return Usuarios.findOne({
             where: {
                 usuario: usuario,
-                contrasenia: rot13(contrasenia)
+                contrasenia: rot13(contrasenia),
+                estado: 1 // Verificamos que el usuario esté activo
             }
         })
         .then(usuario => {
             if (!usuario) {
                 return res.status(404).send({
-                    message: 'Credenciales inválidas.'
+                    message: 'Credenciales inválidas o cuenta inactiva.'
                 });
             }
-
+    
             // Generar el token JWT
             const token = generateToken(usuario);
-
+    
             // Desencriptar contraseña antes de enviar la respuesta
             usuario.contrasenia = rot13(usuario.contrasenia);
-
+    
             return res.status(200).send({
                 message: 'Inicio de sesión exitoso.',
                 usuario: usuario,
@@ -56,11 +57,13 @@ module.exports = {
             });
         })
         .catch(error => {
+            console.error('Error en el login:', error);  // Imprimir el error en la consola
             return res.status(500).send({
                 message: 'Ocurrió un error al intentar iniciar sesión.'
             });
         });
     },
+    
 
     // Métodos CRUD
     find(req, res) {

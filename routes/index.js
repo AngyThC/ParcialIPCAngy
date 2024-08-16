@@ -12,7 +12,7 @@ const usuariosController = require('../controllers/usuariosController');
 const controllerEmpleado = require('../controllers/empleadoController');
 const clientesController = require('../controllers/clientesController');
 const ventasController = require('../controllers/ventasController');
-const detalleVentasController = require('../controllers/detalleVentasController');
+const detalleVentasController = require('../controllers/detalleventasController');
 
 module.exports = (app) => {
     // Rutas Públicas (No protegidas por el middleware)
