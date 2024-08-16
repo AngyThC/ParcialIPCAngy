@@ -33,11 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     fechaInicio: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true
     },
     fechaFinal: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true
     },
     idTelefono: {
