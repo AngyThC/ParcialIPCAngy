@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     direccion: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     subtotal: {
       type: DataTypes.DECIMAL(6, 2),

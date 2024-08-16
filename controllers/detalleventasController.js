@@ -36,7 +36,6 @@ module.exports = {
     create(req, res) {
         let datos = req.body;
         const datos_ingreso = { 
-            direccion: datos.direccion,
             subtotal: datos.subtotal,
             fechaInicio: datos.fechaInicio,
             fechaFinal: datos.fechaFinal,
@@ -45,7 +44,12 @@ module.exports = {
             idResidencia: datos.idResidencia,
             idVenta: datos.idVenta,
         };
-
+    
+        // Solo agregar 'direccion' si está presente en el body
+        if (datos.direccion !== undefined) {
+            datos_ingreso.direccion = datos.direccion;
+        }
+    
         DETALLEVENTAS.create(datos_ingreso)
         .then(detalle => {
             res.send(detalle);
