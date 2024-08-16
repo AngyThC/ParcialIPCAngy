@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
+    nombrePlan: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'Recarga',

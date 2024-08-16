@@ -1,7 +1,7 @@
 'use strict';
 const Sequelize = require('sequelize');
 const db = require('../models');
-const Recarga = db.recargas;
+const Recarga = db.Recarga;
 
 module.exports = {
   async getAllRecargas(req, res) { // getAll recargas
@@ -29,7 +29,7 @@ module.exports = {
       const recarga = await Recarga.findOne({ where: { idRecarga } });
 
       if (!recarga) {
-        return res.status(404).json({ message: 'Recarga con id: ${idRecarga} no encontrada' });
+        return res.status(404).json({ message: `Recarga con id: ${idRecarga} no encontrada` });
       }
 
       res.status(200).json(recarga);
@@ -40,7 +40,7 @@ module.exports = {
   },
 
   async createRecarga(req, res) { // create de recargas
-    const { precio, internet, minutosLlamada, aplicaciones, dias } = req.body;
+    const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan } = req.body;
 
     try {
       const nuevaRecarga = await Recarga.create({
@@ -48,7 +48,8 @@ module.exports = {
         internet,
         minutosLlamada,
         aplicaciones,
-        dias
+        dias,
+        nombrePlan
       });
 
       res.status(201).json({ message: 'Recarga creada exitosamente', recarga: nuevaRecarga });
@@ -60,13 +61,13 @@ module.exports = {
 
   async updateRecarga(req, res) {
     const { idRecarga } = req.params;
-    const { precio, internet, minutosLlamada, aplicaciones, dias } = req.body;
+    const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan } = req.body;
 
     try {
       const recarga = await Recarga.findOne({ where: { idRecarga } });
 
       if (!recarga) {
-        return res.status(404).json({ message: 'Recarga con id: ${idRecarga} no encontrada' });
+        return res.status(404).json({ message: `Recarga con id: ${idRecarga} no encontrada` });
       }
 
       // Solo actualizar los campos que fueron enviados en la solicitud
@@ -75,10 +76,11 @@ module.exports = {
       if (minutosLlamada !== undefined) recarga.minutosLlamada = minutosLlamada;
       if (aplicaciones !== undefined) recarga.aplicaciones = aplicaciones;
       if (dias !== undefined) recarga.dias = dias;
+      if (nombrePlan !== undefined) recarga.nombrePlan = nombrePlan;
 
       await recarga.save();
 
-      res.status(200).json({ message: 'Recarga con id: ${idRecarga} actualizada exitosamente', recarga });
+      res.status(200).json({ message: `Recarga con id: ${idRecarga} actualizada exitosamente`, recarga });
     } catch (error) {
       console.error('Error al actualizar la recarga:', error);
       res.status(500).json({ error: 'Error al actualizar la recarga' });
