@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const Sequelize = require('sequelize');
 const db = require("../models");
 const Usuarios = db.usuarios;
@@ -26,10 +26,10 @@ function generateToken(user) {
 }
 
 module.exports = {
-    //METODO LOGIN
+    // Método LOGIN
     login(req, res) {
         const { usuario, contrasenia } = req.body;
-    
+
         return Usuarios.findOne({
             where: {
                 usuario: usuario,
@@ -62,9 +62,13 @@ module.exports = {
         });
     },
 
-    //METODOS CRUD
+    // Métodos CRUD
     find(req, res) {
-        return Usuarios.findAll()
+        return Usuarios.findAll({
+            where: {
+                estado: 1 // Filtrar por estado 1
+            }
+        })
             .then(usuarios => {
                 // Desencriptar contraseñas
                 usuarios = usuarios.map(usuario => {
@@ -100,11 +104,12 @@ module.exports = {
             });
     },
 
-    create (req, res) {
+    create(req, res) {
         let datos = req.body;
         const datos_ingreso = { 
             usuario: datos.usuario,
             contrasenia: rot13(datos.contrasenia), // Encriptar con ROT13
+            estado: 1 // Se asigna un valor predeterminado de 1 al crear
         };
 
         Usuarios.create(datos_ingreso)
@@ -125,30 +130,36 @@ module.exports = {
     
         if (datos.usuario !== undefined) camposActualizados.usuario = datos.usuario;
         if (datos.contrasenia !== undefined) camposActualizados.contrasenia = rot13(datos.contrasenia); // Encriptar con ROT13 si se actualiza
+        if (datos.estado !== undefined) camposActualizados.estado = datos.estado; // Permite actualizar el estado
 
         return Usuarios.update(
             camposActualizados,
             {
-                where: { idUsuario: id } 
+                where: { idUsuario: id }
             }
         )
-        .then(() => res.status(200).send('El usuario ha sido actualizado'))
+        .then(([rowsUpdated]) => {
+            if (rowsUpdated === 0) {
+                return res.status(404).send({ message: 'Usuario no encontrado' });
+            }
+            return res.status(200).send('El usuario ha sido actualizado');
+        })
         .catch(error => {
             console.log(error);
             return res.status(500).json({ error: 'Error al actualizar usuario' });
         });
-    },    
+    },
 
     async delete(req, res) {
-        const id = req.params.id; 
-    
+        const id = req.params.id;
+
         try {
             const usuario = await Usuarios.findByPk(id);
-    
+
             if (!usuario) {
                 return res.status(404).json({ error: 'Usuario no encontrado' });
             }
-    
+
             await usuario.destroy();
             return res.json({ message: 'Usuario eliminado correctamente' });
         } catch (error) {

@@ -6,7 +6,9 @@ const Empleado = db.empleados;
 module.exports = {
   async getAllEmpleados(req, res) { // getAll empleados
     try {
-      const empleados = await Empleado.findAll();
+      const empleados = await Empleado.findAll({
+        where: { estado: 1 } // Filtrar solo los empleados con estado = 1
+      });
 
       if (empleados.length === 0) {
         return res.status(404).json({ message: 'No se encontraron empleados' });
@@ -37,7 +39,7 @@ module.exports = {
   },
 
   async createEmpleadoWithID(req, res) { // crear empleado con el id del usuario
-    const { salario, salarioTotal, comision, nombre, dpi, telefono, fechaNacimiento, idUsuario } = req.body;
+    const { salario, comision, nombre, dpi, telefono, fechaNacimiento, idUsuario } = req.body;
   
     try {
       // Asegúrate de que la fecha está en formato 'YYYY-MM-DD'
@@ -51,7 +53,8 @@ module.exports = {
         dpi,
         telefono,
         fechaNacimiento: fechaNacimientoFormateada, // Usa el formato adecuado
-        idUsuario
+        idUsuario,
+        estado: 1 // Se asigna un valor predeterminado de 1 al crear
       });
   
       res.status(201).json({ message: 'Empleado creado exitosamente', empleado: nuevoEmpleado });
@@ -63,7 +66,7 @@ module.exports = {
   
   async updateEmpleadoWithID(req, res) { // actualizar a los empleados por id
     const { idEmpleado } = req.params;
-    const { salario, salarioTotal, comision, nombre, dpi, telefono, fechaNacimiento, idUsuario } = req.body;
+    const { salario, salarioTotal, comision, nombre, dpi, telefono, fechaNacimiento, idUsuario, estado } = req.body;
   
     try {
       const empleado = await Empleado.findOne({ where: { idEmpleado } });
@@ -88,6 +91,7 @@ module.exports = {
       }
   
       if (idUsuario !== undefined) empleado.idUsuario = idUsuario;
+      if (estado !== undefined) empleado.estado = estado; // Permite actualizar el estado
   
       await empleado.save();
   

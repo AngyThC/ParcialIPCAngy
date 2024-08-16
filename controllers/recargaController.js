@@ -7,7 +7,9 @@ module.exports = {
   async getAllRecargas(req, res) { // getAll recargas
     try {
       // console.log('Iniciando consulta de recargas...'); // Registro de inicio
-      const recargas = await Recarga.findAll();
+      const recargas = await Recarga.findAll({
+        where: { estado: 1 } // Filtrar solo las recargas con estado = 1
+      });
 
       if (recargas.length === 0) {
         // console.log('No se encontraron recargas.'); // Registro cuando no hay datos
@@ -39,31 +41,6 @@ module.exports = {
     }
   },
 
-  findAllRecargas(req, res) {
-    return Recarga.findAll({
-        attributes: ['nombrePlan', 'idRecarga'],
-        where: {
-            estado: 1 // Filtrar por estado 1
-        }
-    })
-    .then(recargas => {
-        if (recargas.length > 0) {
-            return res.status(200).send(recargas);
-        } else {
-            return res.status(404).send({
-                message: 'No se encontraron recargas.'
-            });
-        }
-    })
-    .catch(error => {
-        console.error("Error al recuperar los datos:", error);
-        return res.status(500).send({
-            message: 'Ocurrió un error al recuperar los datos.'
-        });
-    });
-},
-
-
   async createRecarga(req, res) { // create de recargas
     const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan } = req.body;
 
@@ -74,7 +51,7 @@ module.exports = {
         minutosLlamada,
         aplicaciones,
         dias,
-        nombrePlan,
+        nombrePlan
       });
 
       res.status(201).json({ message: 'Recarga creada exitosamente', recarga: nuevaRecarga });
@@ -86,7 +63,7 @@ module.exports = {
 
   async updateRecarga(req, res) {
     const { idRecarga } = req.params;
-    const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan } = req.body;
+    const { precio, internet, minutosLlamada, aplicaciones, dias, nombrePlan, estado } = req.body;
 
     try {
       const recarga = await Recarga.findOne({ where: { idRecarga } });
@@ -102,6 +79,7 @@ module.exports = {
       if (aplicaciones !== undefined) recarga.aplicaciones = aplicaciones;
       if (dias !== undefined) recarga.dias = dias;
       if (nombrePlan !== undefined) recarga.nombrePlan = nombrePlan;
+      if (estado !== undefined) recarga.estado = estado; // Permite actualizar el estado
 
       await recarga.save();
 

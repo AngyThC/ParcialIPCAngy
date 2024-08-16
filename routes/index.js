@@ -48,6 +48,12 @@ module.exports = (app) => {
     router.post('/recargas/create', controllerRecarga.createRecarga);
     router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
     router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
+         // Rutas de Recargas (Protegidas)
+        router.get('/recargas/getAll', controllerRecarga.getAllRecargas);
+        router.get('/recargas/getId/:idRecarga', controllerRecarga.getRecargaById);
+        router.post('/recargas/create', controllerRecarga.createRecarga);
+        router.put('/recargas/update/:idRecarga', controllerRecarga.updateRecarga);
+        router.delete('/recargas/delete/:idRecarga', controllerRecarga.deleteRecarga);
 
     router.use(authenticateToken);
 
@@ -59,8 +65,6 @@ module.exports = (app) => {
     router.post('/usuarios', usuariosController.create);
     router.put('/usuarios/:id', usuariosController.update);
     router.delete('/usuarios/:id', usuariosController.delete);
-
- 
 
     // Rutas de Telefonos (Protegidas)
     router.get('/telefonos/get', telefonosController.find);
